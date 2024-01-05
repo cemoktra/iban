@@ -1,5 +1,4 @@
 use crate::IbanError;
-use iso_country::Country;
 use rand::prelude::SliceRandom;
 
 #[derive(Debug)]
@@ -65,155 +64,154 @@ pub(crate) trait RandomBban {
     fn rand(&self) -> String;
 }
 
-impl BbanFormat for Country {
+impl BbanFormat for String {
     fn bban_format(&self) -> Result<&'static [CharacterSet], IbanError> {
-        match self {
-            Country::AL => Ok(&[CharacterSet::Numeric(8), CharacterSet::Alphanumeric(16)]),
-            Country::AD => Ok(&[CharacterSet::Numeric(8), CharacterSet::Alphanumeric(12)]),
-            Country::AT => Ok(&[CharacterSet::Numeric(16)]),
-            Country::AZ => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(20)]),
-            Country::BH => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(14)]),
-            Country::BY => Ok(&[
+        match self.as_str() {
+            "AL" => Ok(&[CharacterSet::Numeric(8), CharacterSet::Alphanumeric(16)]),
+            "AD" => Ok(&[CharacterSet::Numeric(8), CharacterSet::Alphanumeric(12)]),
+            "AT" => Ok(&[CharacterSet::Numeric(16)]),
+            "AZ" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(20)]),
+            "BH" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(14)]),
+            "BY" => Ok(&[
                 CharacterSet::Alphanumeric(4),
                 CharacterSet::Numeric(4),
                 CharacterSet::Alphanumeric(16),
             ]),
-            Country::BE => Ok(&[CharacterSet::Numeric(12)]),
-            Country::BA => Ok(&[CharacterSet::Numeric(16)]),
-            Country::BR => Ok(&[
+            "BE" => Ok(&[CharacterSet::Numeric(12)]),
+            "BA" => Ok(&[CharacterSet::Numeric(16)]),
+            "BR" => Ok(&[
                 CharacterSet::Numeric(23),
                 CharacterSet::Alphabetic(1),
                 CharacterSet::Alphanumeric(1),
             ]),
-            Country::BG => Ok(&[
+            "BG" => Ok(&[
                 CharacterSet::Alphabetic(4),
                 CharacterSet::Numeric(6),
                 CharacterSet::Alphanumeric(8),
             ]),
-            Country::CR => Ok(&[CharacterSet::Numeric(18)]),
-            Country::HR => Ok(&[CharacterSet::Numeric(17)]),
-            Country::CZ => Ok(&[CharacterSet::Numeric(20)]),
-            Country::DK => Ok(&[CharacterSet::Numeric(14)]),
-            Country::DO => Ok(&[CharacterSet::Alphanumeric(4), CharacterSet::Numeric(20)]),
-            Country::TL => Ok(&[CharacterSet::Numeric(19)]),
-            Country::EG => Ok(&[CharacterSet::Numeric(25)]),
-            Country::SV => Ok(&[CharacterSet::Alphanumeric(4), CharacterSet::Numeric(20)]),
-            Country::EE => Ok(&[CharacterSet::Numeric(16)]),
-            Country::FO => Ok(&[CharacterSet::Numeric(14)]),
-            Country::FI => Ok(&[CharacterSet::Numeric(14)]),
-            Country::FR => Ok(&[
+            "CR" => Ok(&[CharacterSet::Numeric(18)]),
+            "HR" => Ok(&[CharacterSet::Numeric(17)]),
+            "CZ" => Ok(&[CharacterSet::Numeric(20)]),
+            "DK" => Ok(&[CharacterSet::Numeric(14)]),
+            "DO" => Ok(&[CharacterSet::Alphanumeric(4), CharacterSet::Numeric(20)]),
+            "TL" => Ok(&[CharacterSet::Numeric(19)]),
+            "EG" => Ok(&[CharacterSet::Numeric(25)]),
+            "SV" => Ok(&[CharacterSet::Alphanumeric(4), CharacterSet::Numeric(20)]),
+            "EE" => Ok(&[CharacterSet::Numeric(16)]),
+            "FO" => Ok(&[CharacterSet::Numeric(14)]),
+            "FI" => Ok(&[CharacterSet::Numeric(14)]),
+            "FR" => Ok(&[
                 CharacterSet::Numeric(10),
                 CharacterSet::Alphanumeric(11),
                 CharacterSet::Numeric(2),
             ]),
-            Country::GE => Ok(&[CharacterSet::Alphabetic(2), CharacterSet::Numeric(16)]),
-            Country::DE => Ok(&[CharacterSet::Numeric(18)]),
-            Country::GI => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(15)]),
-            Country::GR => Ok(&[CharacterSet::Numeric(7), CharacterSet::Alphanumeric(16)]),
-            Country::GL => Ok(&[CharacterSet::Numeric(14)]),
-            Country::GT => Ok(&[
+            "GE" => Ok(&[CharacterSet::Alphabetic(2), CharacterSet::Numeric(16)]),
+            "DE" => Ok(&[CharacterSet::Numeric(18)]),
+            "GI" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(15)]),
+            "GR" => Ok(&[CharacterSet::Numeric(7), CharacterSet::Alphanumeric(16)]),
+            "GL" => Ok(&[CharacterSet::Numeric(14)]),
+            "GT" => Ok(&[
                 CharacterSet::Alphanumeric(4),
                 CharacterSet::Alphanumeric(20),
             ]),
-            Country::HU => Ok(&[CharacterSet::Numeric(24)]),
-            Country::IS => Ok(&[CharacterSet::Numeric(22)]),
-            Country::IQ => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(15)]),
-            Country::IE => Ok(&[
+            "HU" => Ok(&[CharacterSet::Numeric(24)]),
+            "IS" => Ok(&[CharacterSet::Numeric(22)]),
+            "IQ" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(15)]),
+            "IE" => Ok(&[
                 CharacterSet::Alphabetic(4),
                 CharacterSet::Numeric(6),
                 CharacterSet::Numeric(8),
             ]),
-            Country::IL => Ok(&[CharacterSet::Numeric(19)]),
-            Country::IT => Ok(&[
+            "IL" => Ok(&[CharacterSet::Numeric(19)]),
+            "IT" => Ok(&[
                 CharacterSet::Alphabetic(1),
                 CharacterSet::Numeric(10),
                 CharacterSet::Alphanumeric(12),
             ]),
-            Country::JO => Ok(&[
+            "JO" => Ok(&[
                 CharacterSet::Alphabetic(4),
                 CharacterSet::Numeric(4),
                 CharacterSet::Alphanumeric(18),
             ]),
-            Country::KZ => Ok(&[CharacterSet::Numeric(3), CharacterSet::Alphanumeric(13)]),
-            // iso_country does not know kosovo XK
-            //            Country::XK => Ok(&[
-            //                CharacterSet::Numeric(4),
-            //                CharacterSet::Numeric(10),
-            //                CharacterSet::Numeric(2),
-            //            ]),
-            Country::KW => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(22)]),
-            Country::LV => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(13)]),
-            Country::LB => Ok(&[CharacterSet::Numeric(4), CharacterSet::Alphanumeric(20)]),
-            Country::LY => Ok(&[CharacterSet::Numeric(21)]),
-            Country::LI => Ok(&[CharacterSet::Numeric(5), CharacterSet::Alphanumeric(12)]),
-            Country::LU => Ok(&[CharacterSet::Numeric(3), CharacterSet::Alphanumeric(13)]),
-            Country::MT => Ok(&[
+            "KZ" => Ok(&[CharacterSet::Numeric(3), CharacterSet::Alphanumeric(13)]),
+            // // iso_country does not know kosovo XK
+            "XK" => Ok(&[
+                CharacterSet::Numeric(4),
+                CharacterSet::Numeric(10),
+                CharacterSet::Numeric(2),
+            ]),
+            "KW" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(22)]),
+            "LV" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(13)]),
+            "LB" => Ok(&[CharacterSet::Numeric(4), CharacterSet::Alphanumeric(20)]),
+            "LY" => Ok(&[CharacterSet::Numeric(21)]),
+            "LI" => Ok(&[CharacterSet::Numeric(5), CharacterSet::Alphanumeric(12)]),
+            "LU" => Ok(&[CharacterSet::Numeric(3), CharacterSet::Alphanumeric(13)]),
+            "MT" => Ok(&[
                 CharacterSet::Alphabetic(4),
                 CharacterSet::Numeric(5),
                 CharacterSet::Alphanumeric(18),
             ]),
-            Country::MR => Ok(&[CharacterSet::Numeric(23)]),
-            Country::MU => Ok(&[
+            "MR" => Ok(&[CharacterSet::Numeric(23)]),
+            "MU" => Ok(&[
                 CharacterSet::Alphabetic(4),
                 CharacterSet::Numeric(19),
                 CharacterSet::Alphabetic(3),
             ]),
-            Country::MC => Ok(&[
+            "MC" => Ok(&[
                 CharacterSet::Numeric(10),
                 CharacterSet::Alphanumeric(11),
                 CharacterSet::Numeric(2),
             ]),
-            Country::MD => Ok(&[
+            "MD" => Ok(&[
                 CharacterSet::Alphanumeric(2),
                 CharacterSet::Alphanumeric(18),
             ]),
-            Country::ME => Ok(&[CharacterSet::Numeric(18)]),
-            Country::NL => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(10)]),
-            Country::MK => Ok(&[
+            "ME" => Ok(&[CharacterSet::Numeric(18)]),
+            "NL" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(10)]),
+            "MK" => Ok(&[
                 CharacterSet::Numeric(3),
                 CharacterSet::Alphanumeric(10),
                 CharacterSet::Numeric(2),
             ]),
-            Country::NO => Ok(&[CharacterSet::Numeric(11)]),
-            Country::PK => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(16)]),
-            Country::PS => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(21)]),
-            Country::PL => Ok(&[CharacterSet::Numeric(24)]),
-            Country::PT => Ok(&[CharacterSet::Numeric(21)]),
-            Country::QA => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(21)]),
-            Country::RO => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(16)]),
-            Country::RU => Ok(&[CharacterSet::Numeric(14), CharacterSet::Alphanumeric(15)]),
-            Country::LC => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(24)]),
-            Country::SM => Ok(&[
+            "NO" => Ok(&[CharacterSet::Numeric(11)]),
+            "PK" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(16)]),
+            "PS" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(21)]),
+            "PL" => Ok(&[CharacterSet::Numeric(24)]),
+            "PT" => Ok(&[CharacterSet::Numeric(21)]),
+            "QA" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(21)]),
+            "RO" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(16)]),
+            "PU" => Ok(&[CharacterSet::Numeric(14), CharacterSet::Alphanumeric(15)]),
+            "LC" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Alphanumeric(24)]),
+            "SM" => Ok(&[
                 CharacterSet::Alphabetic(1),
                 CharacterSet::Numeric(10),
                 CharacterSet::Alphanumeric(12),
             ]),
-            Country::ST => Ok(&[CharacterSet::Numeric(21)]),
-            Country::SA => Ok(&[CharacterSet::Numeric(2), CharacterSet::Alphanumeric(18)]),
-            Country::RS => Ok(&[CharacterSet::Numeric(18)]),
-            Country::SC => Ok(&[
+            "ST" => Ok(&[CharacterSet::Numeric(21)]),
+            "SA" => Ok(&[CharacterSet::Numeric(2), CharacterSet::Alphanumeric(18)]),
+            "RS" => Ok(&[CharacterSet::Numeric(18)]),
+            "SC" => Ok(&[
                 CharacterSet::Alphabetic(4),
                 CharacterSet::Numeric(20),
                 CharacterSet::Alphabetic(3),
             ]),
-            Country::SK => Ok(&[CharacterSet::Numeric(24)]),
-            Country::SI => Ok(&[CharacterSet::Numeric(15)]),
-            Country::ES => Ok(&[CharacterSet::Numeric(20)]),
-            Country::SD => Ok(&[CharacterSet::Numeric(14)]),
-            Country::SE => Ok(&[CharacterSet::Numeric(20)]),
-            Country::CH => Ok(&[CharacterSet::Numeric(5), CharacterSet::Alphanumeric(12)]),
-            Country::TN => Ok(&[CharacterSet::Numeric(20)]),
-            Country::TR => Ok(&[
+            "SK" => Ok(&[CharacterSet::Numeric(24)]),
+            "SI" => Ok(&[CharacterSet::Numeric(15)]),
+            "ES" => Ok(&[CharacterSet::Numeric(20)]),
+            "SD" => Ok(&[CharacterSet::Numeric(14)]),
+            "SE" => Ok(&[CharacterSet::Numeric(20)]),
+            "CH" => Ok(&[CharacterSet::Numeric(5), CharacterSet::Alphanumeric(12)]),
+            "TN" => Ok(&[CharacterSet::Numeric(20)]),
+            "TR" => Ok(&[
                 CharacterSet::Numeric(5),
                 CharacterSet::Fixed('0'),
                 CharacterSet::Alphanumeric(16),
             ]),
-            Country::UA => Ok(&[CharacterSet::Numeric(6), CharacterSet::Alphanumeric(19)]),
-            Country::AE => Ok(&[CharacterSet::Numeric(6), CharacterSet::Numeric(16)]),
-            Country::GB => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(14)]),
-            Country::VA => Ok(&[CharacterSet::Numeric(3), CharacterSet::Numeric(15)]),
-            Country::VG => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(16)]),
-
+            "UA" => Ok(&[CharacterSet::Numeric(6), CharacterSet::Alphanumeric(19)]),
+            "AE" => Ok(&[CharacterSet::Numeric(6), CharacterSet::Numeric(16)]),
+            "GB" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(14)]),
+            "VA" => Ok(&[CharacterSet::Numeric(3), CharacterSet::Numeric(15)]),
+            "VG" => Ok(&[CharacterSet::Alphabetic(4), CharacterSet::Numeric(16)]),
             _ => Err(IbanError::UnsupportedCountry),
         }
     }
