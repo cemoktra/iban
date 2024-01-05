@@ -24,6 +24,7 @@ impl Iban {
 
         Ok(slf)
     }
+
     pub fn country(&self) -> Country {
         self.country_code
     }
