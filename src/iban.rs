@@ -20,7 +20,6 @@ impl Iban {
         };
 
         let modulo = slf.modulo();
-        println!("{modulo}");
         slf.check_digits = (98 - modulo) as u8;
 
         Ok(slf)
@@ -39,7 +38,7 @@ impl Iban {
 
     fn modulo(&self) -> u64 {
         let check_string = format!(
-            "{}{:0>2}{}",
+            "{}{}{:0>2}",
             &self.bban,
             &self.country_code.to_string(),
             self.check_digits
@@ -99,7 +98,11 @@ impl FromStr for Iban {
     type Err = IbanError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut bban = s.chars().filter(|c| !c.is_whitespace()).collect::<String>();
+        let mut bban = s
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .map(|c| c.to_ascii_uppercase())
+            .collect::<String>();
         let country_code = bban.drain(..2).collect::<String>();
         let check_digits = bban.drain(..2).collect::<String>();
 

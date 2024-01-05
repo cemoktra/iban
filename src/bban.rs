@@ -74,15 +74,13 @@ impl ValidateBban for &[CharacterSet] {
         let mut fmt_iter = self.iter();
         let mut current_fmt = fmt_iter.next().ok_or(IbanError::InvalidBBAN)?;
         let mut offset = 0;
-        let mut char_iter = bban.chars();
+        let mut char_iter = bban
+            .chars()
+            .filter(|c| !c.is_whitespace())
+            .map(|c| c.to_ascii_uppercase());
         let mut char = char_iter.next();
 
         while let Some(c) = char {
-            if c.is_whitespace() {
-                char = char_iter.next();
-                continue;
-            }
-
             let fmt_length = current_fmt.validate(c)?;
 
             offset += 1;
@@ -107,30 +105,37 @@ impl RandomBban for &[CharacterSet] {
         let mut rng = rand::thread_rng();
 
         for set in self.iter() {
-            match set {
-                CharacterSet::Alphabetic(l) => bban.push_str(
-                    &[
+            let (alphabet, chars) = match set {
+                CharacterSet::Alphabetic(l) => (
+                    [
                         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
                         'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
                     ]
-                    .choose_multiple(&mut rng, *l)
-                    .collect::<String>(),
+                    .as_slice(),
+                    l,
                 ),
 
-                CharacterSet::Alphanumeric(l) => bban.push_str(
-                    &[
+                CharacterSet::Alphanumeric(l) => (
+                    [
                         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
                         'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3',
                         '4', '5', '6', '7', '8', '9',
                     ]
-                    .choose_multiple(&mut rng, *l)
-                    .collect::<String>(),
+                    .as_slice(),
+                    l,
                 ),
-                CharacterSet::Numeric(l) => bban.push_str(
-                    &['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-                        .choose_multiple(&mut rng, *l)
-                        .collect::<String>(),
+                CharacterSet::Numeric(l) => (
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].as_slice(),
+                    l,
                 ),
+            };
+
+            for _ in 0..*chars {
+                bban.push(
+                    *alphabet
+                        .choose(&mut rng)
+                        .expect("failed to choose random item"),
+                );
             }
         }
 
