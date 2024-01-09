@@ -1,18 +1,18 @@
 use crate::bban::{BbanFormat, RandomBban, ValidateBban};
-use crate::IbanError;
+use crate::{Country, IbanError};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 pub struct Iban {
-    country_code: String,
+    country_code: Country,
     check_digits: u8,
     bban: String,
 }
 
 impl Iban {
-    pub fn rand(country_code: impl Into<String>) -> Result<Self, IbanError> {
-        let country_code = country_code.into();
-        let bban = country_code.bban_format()?.rand();
+    pub fn rand(country_code: &str) -> Result<Self, IbanError> {
+        let country_code: Country = country_code.parse()?;
+        let bban = country_code.bban_format().rand();
         let mut slf = Self {
             country_code,
             check_digits: 0,
@@ -25,7 +25,7 @@ impl Iban {
         Ok(slf)
     }
 
-    pub fn country(&self) -> &str {
+    pub fn country(&self) -> &Country {
         &self.country_code
     }
 
@@ -102,7 +102,8 @@ impl FromStr for Iban {
         let check_digits = bban.drain(..2).collect::<String>();
 
         let check_digits = check_digits.parse()?;
-        country_code.bban_format()?.validate_bban(&bban)?;
+        let country_code: Country = country_code.parse()?;
+        country_code.bban_format().validate_bban(&bban)?;
 
         let iban = Self {
             country_code,
