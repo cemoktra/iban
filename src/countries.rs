@@ -5,6 +5,7 @@ use std::str::FromStr;
 use crate::bban::{BbanFormat, CharacterSet, RandomBban};
 use crate::IbanError;
 
+#[derive(Debug, PartialEq)]
 pub enum Country {
     AD,
     AE,

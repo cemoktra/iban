@@ -124,13 +124,14 @@ impl FromStr for Iban {
 #[cfg(test)]
 mod test {
     use std::str::FromStr;
+    use crate::Country;
 
     #[test]
     fn test_parse_iban() {
         let iban_str = "GB82 WEST 1234 5698 7654 32";
         let iban = super::Iban::from_str(iban_str).unwrap();
 
-        assert_eq!("GB", iban.country_code);
+        assert_eq!(Country::GB, iban.country_code);
         assert_eq!(82, iban.check_digits);
         assert_eq!("WEST12345698765432", iban.bban);
     }
