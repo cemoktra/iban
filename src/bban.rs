@@ -64,7 +64,6 @@ pub(crate) trait RandomBban {
     fn rand(&self) -> String;
 }
 
-
 impl ValidateBban for &[CharacterSet] {
     fn validate_bban(&self, bban: &str) -> Result<(), IbanError> {
         let mut fmt_iter = self.iter();

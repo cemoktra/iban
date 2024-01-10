@@ -37,6 +37,18 @@ impl Iban {
         &self.bban
     }
 
+    pub fn bank_identifier(&self) -> Option<String> {
+        self.country_code
+            .bank_identifier_pos()
+            .map(|pos| self.bban[pos].to_string())
+    }
+
+    pub fn branch_identifier(&self) -> Option<String> {
+        self.country_code
+            .branch_identifier_pos()
+            .map(|pos| self.bban[pos].to_string())
+    }
+
     fn modulo(&self) -> u64 {
         let check_string = format!(
             "{}{}{:0>2}",
@@ -123,8 +135,8 @@ impl FromStr for Iban {
 
 #[cfg(test)]
 mod test {
-    use std::str::FromStr;
     use crate::Country;
+    use std::str::FromStr;
 
     #[test]
     fn test_parse_iban() {
@@ -134,6 +146,8 @@ mod test {
         assert_eq!(Country::GB, iban.country_code);
         assert_eq!(82, iban.check_digits);
         assert_eq!("WEST12345698765432", iban.bban);
+        assert_eq!(Some("WEST"), iban.bank_identifier().as_deref());
+        assert_eq!(Some("123456"), iban.branch_identifier().as_deref());
     }
 
     #[test]
