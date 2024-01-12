@@ -9,7 +9,6 @@ pub(crate) enum CharacterSet {
     Alphanumeric(usize),
     // n
     Numeric(usize),
-    Fixed(char),
 }
 
 impl CharacterSet {
@@ -18,7 +17,6 @@ impl CharacterSet {
             CharacterSet::Alphabetic(l) => *l,
             CharacterSet::Alphanumeric(l) => *l,
             CharacterSet::Numeric(l) => *l,
-            CharacterSet::Fixed(_) => 1,
         }
     }
 
@@ -41,12 +39,6 @@ impl CharacterSet {
                     return Err(IbanError::InvalidBBAN);
                 }
                 Ok(*len)
-            }
-            CharacterSet::Fixed(f) => {
-                if c != *f {
-                    return Err(IbanError::InvalidBBAN);
-                }
-                Ok(1)
             }
         }
     }
@@ -123,10 +115,6 @@ impl RandomBban for &[CharacterSet] {
                     ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].as_slice(),
                     l,
                 ),
-                CharacterSet::Fixed(c) => {
-                    bban.push(*c);
-                    continue;
-                }
             };
 
             for _ in 0..*chars {
